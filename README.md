@@ -10,6 +10,8 @@
 Denoise and upscale noisy, low-quality footage on your own NVIDIA GPU.
 Your video never leaves your computer — no uploads, no accounts, no cloud.
 
+**[restoreforge-ai.vercel.app](https://restoreforge-ai.vercel.app)** — documentation and product site
+
 [Features](#features) · [Requirements](#system-requirements) · [Quick start](#quick-start) ·
 [Architecture](#architecture) · [Limitations](#honest-limitations) · [Contributing](CONTRIBUTING.md)
 
@@ -215,7 +217,7 @@ npm run build
 5. Deploy.
 6. Add the resulting URL to this README.
 
-> **Production URL:** _not yet deployed_
+> **Production URL:** <https://restoreforge-ai.vercel.app>
 
 `GITHUB_OWNER` and `GITHUB_REPO` in [`web/src/lib/site.ts`](web/src/lib/site.ts)
 are already set to this repository. Every outbound link derives from those two
@@ -246,7 +248,7 @@ By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
 - [ ] Visually review the desktop UI on a physical display
 - [x] Set the repository URLs in `web/src/lib/site.ts`
 - [ ] Create the first GitHub Release
-- [ ] Deploy the website and record the URL above
+- [x] Deploy the website and record the URL above
 
 ## License
 
