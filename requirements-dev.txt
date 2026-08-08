@@ -1,0 +1,12 @@
+# Dependencies needed to run the test suites.
+#
+# Deliberately NOT the full runtime set: both suites stub out torch and
+# tkinter, so neither is required to exercise the pipeline logic, the chunking
+# and resume behaviour, or the entire GUI construction path. That is what lets
+# CI run on a machine with no GPU and no display.
+#
+# The full runtime dependencies (torch, torchvision, numpy, einops, tqdm,
+# requests) are installed into venv/ by setup.ps1.
+
+numpy>=1.26
+tqdm>=4.66

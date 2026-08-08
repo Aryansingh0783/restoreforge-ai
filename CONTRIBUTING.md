@@ -20,8 +20,14 @@ npm run dev
 
 ## Running the tests
 
-Both suites run without a GPU and without a display. Run them before opening a
-pull request.
+Both suites run without a GPU and without a display, because they stub torch
+and tkinter. Install the small test-only dependency set first:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+Then run them before opening a pull request.
 
 ```powershell
 .\venv\Scripts\python.exe _test_pipeline.py   # 30 checks, needs ffmpeg

@@ -29,10 +29,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      # The suites deliberately avoid torch and a display: they stub both, so
-      # CI needs nothing beyond numpy and ffmpeg.
+      # The suites deliberately stub torch and tkinter, so CI needs neither a
+      # GPU nor a display - only the handful of modules imported at module
+      # scope by the code under test.
       - name: Install test dependencies
-        run: python -m pip install --upgrade pip numpy
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
 
       - name: Byte-compile every module
         run: python -m compileall -q archs.py config.py gui.py restore_video.py verify_setup.py
