@@ -4,6 +4,9 @@
 
 **Local AI Video Restoration for Windows**
 
+[![CI](https://github.com/Aryansingh0783/restoreforge-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Aryansingh0783/restoreforge-ai/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-0b0d10?labelColor=1b2029)](LICENSE)
+
 Denoise and upscale noisy, low-quality footage on your own NVIDIA GPU.
 Your video never leaves your computer — no uploads, no accounts, no cloud.
 
@@ -214,9 +217,9 @@ npm run build
 
 > **Production URL:** _not yet deployed_
 
-Before deploying, set `GITHUB_OWNER` and `GITHUB_REPO` in
-[`web/src/lib/site.ts`](web/src/lib/site.ts). Every outbound link derives from
-those two values, so there is exactly one place to edit.
+`GITHUB_OWNER` and `GITHUB_REPO` in [`web/src/lib/site.ts`](web/src/lib/site.ts)
+are already set to this repository. Every outbound link derives from those two
+values, so a fork needs exactly one edit.
 
 ## Security and privacy
 
@@ -241,7 +244,7 @@ By participating you agree to the [Code of Conduct](CODE_OF_CONDUCT.md).
 - [ ] Capture real screenshots to replace the placeholders in `docs/screenshots/`
 - [ ] Complete and document a full end-to-end restoration run
 - [ ] Visually review the desktop UI on a physical display
-- [ ] Set the repository URLs in `web/src/lib/site.ts`
+- [x] Set the repository URLs in `web/src/lib/site.ts`
 - [ ] Create the first GitHub Release
 - [ ] Deploy the website and record the URL above
 
