@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  desktop:
+    name: Desktop app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      # The suites deliberately avoid torch and a display: they stub both, so
+      # CI needs nothing beyond numpy and ffmpeg.
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip numpy
+
+      - name: Byte-compile every module
+        run: python -m compileall -q archs.py config.py gui.py restore_video.py verify_setup.py
+
+      - name: GUI test suite
+        run: python _test_gui.py
+
+      - name: Pipeline test suite
+        run: python _test_pipeline.py
+
+      - name: Windows scripts must keep CRLF endings
+        run: |
+          python - <<'PY'
+          import sys, pathlib
+          bad = []
+          for p in list(pathlib.Path('.').rglob('*.bat')) + list(pathlib.Path('.').rglob('*.ps1')):
+              if 'node_modules' in p.parts or 'venv' in p.parts:
+                  continue
+              raw = p.read_bytes()
+              if b'\r\r' in raw or raw.count(b'\r\n') != raw.count(b'\n'):
+                  bad.append(str(p))
+          if bad:
+              sys.exit('Not CRLF-clean: ' + ', '.join(bad))
+          print('All Windows scripts are CRLF-clean')
+          PY
+
+      - name: No private paths or media committed
+        run: |
+          python - <<'PY'
+          import sys, pathlib, re
+          patterns = [r'C:\\\\Users\\\\[A-Za-z0-9_.-]+\\\\', r'C:/Users/[A-Za-z0-9_.-]+/']
+          offenders = []
+          for p in pathlib.Path('.').rglob('*'):
+              if not p.is_file() or any(x in p.parts for x in ('venv', 'node_modules', '.git')):
+                  continue
+              if p.suffix in {'.py', '.bat', '.ps1', '.md', '.ts', '.tsx', '.json', '.yml'}:
+                  try:
+                      text = p.read_text(encoding='utf-8', errors='ignore')
+                  except OSError:
+                      continue
+                  for pat in patterns:
+                      # The test suite asserts on this pattern deliberately.
+                      if re.search(pat, text) and p.name != '_test_gui.py':
+                          offenders.append(f'{p}: {pat}')
+          if offenders:
+              sys.exit('Hard-coded user paths found:\n' + '\n'.join(offenders))
+          print('No hard-coded user profile paths')
+          PY
+
+  website:
+    name: Website
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build

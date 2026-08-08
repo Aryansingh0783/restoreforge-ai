@@ -1,0 +1,58 @@
+name: Restoration quality report
+description: The pipeline ran, but the output does not look right
+title: "[Quality] "
+labels: ["quality"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read the [quality guide](../../blob/main/docs/quality-guide.md)
+        first — plastic-looking faces and shimmer usually come down to denoise
+        strength and output scale.
+
+        Do **not** attach video files. Describe what you see, or link to a
+        frame grab you are comfortable sharing publicly.
+  - type: dropdown
+    id: symptom
+    attributes:
+      label: What does the output look like?
+      options:
+        - Plastic or waxy faces, lost texture
+        - Shimmering or boiling in flat areas
+        - Invented or wrong detail (faces, text)
+        - Too soft, not enough improvement
+        - Colour or brightness shifted from the source
+        - Blocking, banding or other compression artifacts
+        - Audio out of sync
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe what you see
+    validations:
+      required: true
+  - type: input
+    id: settings
+    attributes:
+      label: Settings used
+      placeholder: scale 2x, denoise 0.85, cq 19, hevc_nvenc
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source characteristics
+      placeholder: 1280x720, h264, yuvj420p full range, ~15 fps variable, webcam
+    validations:
+      required: true
+  - type: checkboxes
+    id: tried
+    attributes:
+      label: What have you already tried?
+      options:
+        - label: Rendered a 30-second test clip
+        - label: Tried a lower denoise strength (0.70)
+        - label: Compared 2x against 4x on the same clip
+        - label: Confirmed temporal pre-denoise is enabled

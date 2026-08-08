@@ -1,0 +1,68 @@
+# ---- local environment -----------------------------------------------------
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ---- setup / runtime state (machine specific) ------------------------------
+.setup_ok
+settings.json
+
+# ---- model weights: downloaded by setup, never committed -------------------
+models/
+*.pth
+*.onnx
+*.safetensors
+
+# ---- restoration artefacts -------------------------------------------------
+work/
+*_work/
+*_test/
+*_est/
+restore_work*/
+PROGRESS.txt
+chunks/
+*_RESTORED_*.mp4
+test_*x.mp4
+_speedtest.mp4
+
+# ---- media (never commit source or output video) ---------------------------
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.wmv
+*.m4v
+*.webm
+
+# ---- logs and scratch ------------------------------------------------------
+*.log
+.tmp/
+tmp/
+
+# ---- website ---------------------------------------------------------------
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# ---- private working notes -------------------------------------------------
+# Internal development history written for the original author. It contains
+# local file paths and is superseded publicly by CHANGELOG.md and the
+# regression table in CONTRIBUTING.md.
+PROJECT_CONTEXT.md
+
+# ---- secrets ---------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+
+# ---- editors / OS ----------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

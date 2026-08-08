@@ -1,0 +1,26 @@
+# Normalise text files in the repository, check out platform-appropriate.
+* text=auto eol=lf
+
+# Windows scripts MUST keep CRLF. cmd.exe locates GOTO labels by byte offset,
+# and an LF-only batch file can fail to resolve a jump - which terminates the
+# script instantly with no error message at all. PowerShell is included for
+# consistency with Windows tooling.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Explicitly binary, so Git never tries to convert line endings.
+*.pth binary
+*.onnx binary
+*.safetensors binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.mp4 binary
+*.mkv binary
+
+# Keep generated website assets out of language statistics and diffs.
+web/package-lock.json linguist-generated=true -diff

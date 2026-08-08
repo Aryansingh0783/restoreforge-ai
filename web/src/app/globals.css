@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-base text-ink antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Visible, consistent keyboard focus everywhere. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/70 ring-offset-2 ring-offset-base;
+  }
+
+  ::selection {
+    @apply bg-accent/25 text-ink;
+  }
+}
+
+@layer components {
+  /* Hairline grid frame used by section headers and cards, echoing the
+     technical/brutalist reference boards. */
+  .rule {
+    @apply border-line;
+  }
+
+  .card {
+    @apply rounded-xl2 border border-line bg-card;
+  }
+
+  .card-hover {
+    @apply transition-colors duration-200 hover:border-linehi hover:bg-cardhi;
+  }
+
+  .kicker {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-faint;
+  }
+
+  .lede {
+    @apply text-balance text-lg leading-relaxed text-sub;
+  }
+
+  .link {
+    @apply text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:decoration-accent;
+  }
+
+  /* Faint dotted grid. Deliberately low contrast so it reads as texture and
+     never competes with content. */
+  .gridwash {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .glow {
+    background:
+      radial-gradient(60rem 26rem at 50% -6rem, rgba(34, 211, 238, 0.11), transparent 70%),
+      radial-gradient(38rem 22rem at 88% 8%, rgba(167, 139, 250, 0.08), transparent 70%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
