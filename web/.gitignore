@@ -1,7 +1,14 @@
+# dependencies
 node_modules/
+
+# build output
 .next/
 out/
-.vercel/
 *.tsbuildinfo
 next-env.d.ts
+
+# vercel: project link and the OIDC token it writes on `vercel link`
+.vercel/
+.vercel
 .env*.local
+.env*
