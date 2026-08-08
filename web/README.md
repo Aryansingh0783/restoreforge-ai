@@ -43,29 +43,65 @@ Every outbound link is derived from two constants in
 [`src/lib/site.ts`](src/lib/site.ts):
 
 ```ts
-export const GITHUB_OWNER = 'your-github-username';
-export const GITHUB_REPO = 'restoreforge-ai';
+export const GITHUB_OWNER: string = 'Aryansingh0783';
+export const GITHUB_REPO: string = 'restoreforge-ai';
 ```
 
-Replace them once the repository exists. Until you do, `REPO_CONFIGURED` is
-`false` and the download page shows an explicit notice instead of presenting
-links that would 404.
+A fork needs exactly one edit here. If they are left at the placeholder
+`'your-github-username'`, `REPO_CONFIGURED` is `false` and the download page
+shows an explicit notice rather than presenting links that would 404.
 
 No environment variables are required, so there is no `.env.example`.
 
 ## Deploying to Vercel
 
+The live site is <https://restoreforge-ai.vercel.app>.
+
+To deploy a fork:
+
 1. Push the repository to GitHub.
 2. In Vercel, choose **Add New → Project** and import it.
-3. Set **Root Directory** to `web`. This matters — the repository root is the
-   Python desktop application, not a Node project.
-4. Vercel detects **Next.js** automatically. Leave the build command, output
-   directory and install command at their defaults.
-5. No environment variables are needed.
-6. Deploy, then add the production URL to the root `README.md`.
+3. Leave **Root Directory** at the repository root. The root
+   [`vercel.json`](../vercel.json) already directs the build into `web/` — see
+   below for why.
+4. No environment variables are needed.
+5. Deploy, then add the production URL to the root `README.md`.
 
-There is no `vercel.json`: the defaults are correct for this project, and an
-unnecessary config file is one more thing to drift out of date.
+From the command line instead:
+
+```bash
+cd web
+npx vercel link --yes --project <your-project-name>
+npx vercel deploy --prod --yes
+```
+
+### Why there is a `vercel.json` at the repository root
+
+Deploying from this directory with the CLI works with no configuration at all.
+Git-triggered deploys are different: Vercel builds from the repository root,
+where there is no Node project, and the build fails with *"Couldn't find any
+`pages` or `app` directory"*.
+
+The usual fix is to set **Root Directory** to `web` in the project's dashboard
+settings. That works, but it lives outside the repository — a fresh fork or a
+recreated project silently loses it. The root
+[`vercel.json`](../vercel.json) encodes the same thing in version control:
+
+```json
+{
+  "buildCommand": "cd web && npm ci --no-audit --no-fund && npm run build",
+  "outputDirectory": "web/out",
+  "installCommand": "echo ...",
+  "framework": null
+}
+```
+
+`installCommand` is a deliberate no-op because there is nothing to install at
+the root; `buildCommand` handles installation inside `web/`. `framework` is
+`null` so Vercel does not try to auto-detect a framework at the root.
+
+If you prefer the dashboard approach, delete this file and set Root Directory
+to `web` instead. Do not do both.
 
 ### Why `output: 'export'`
 
